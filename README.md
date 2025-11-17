@@ -12,6 +12,28 @@ A comprehensive book review platform built with Laravel, allowing users to disco
 - **Admin Dashboard**: Content moderation and report management
 - **Reporting System**: Users can report inappropriate content
 
+## Screenshots
+
+> **Note:** Place your screenshot images in the `screenshots/` directory with the following filenames:
+> - `homepage.png` - Homepage screenshot
+> - `admin-dashboard.png` - Admin dashboard screenshot  
+> - `manage-books.png` - Manage books page screenshot
+
+### Homepage
+The homepage features a modern hero section with gradient background, enhanced search functionality, genre browsing with rounded pill buttons, and displays top-rated and recently added books with beautiful card layouts featuring rating badges and hover effects.
+
+![Homepage](screenshots/homepage.png)
+
+### Admin Dashboard
+The admin dashboard provides a comprehensive overview with modern statistics cards showing total reports, pending reports, total books, and total users. It includes a rating distribution pie chart and quick access menu to all management features.
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Manage Books
+The book management interface allows administrators to view all books in a clean table format with ratings displayed as stars, reviews count, and quick edit/delete action buttons. The interface features a modern design with improved typography and spacing.
+
+![Manage Books](screenshots/manage-books.png)
+
 ## Technology Stack
 
 - **Backend**: PHP 7.4+ / Laravel 8
