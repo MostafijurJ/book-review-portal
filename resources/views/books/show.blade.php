@@ -3,93 +3,164 @@
 @section('title', $book->title . ' - Book Review Portal')
 
 @section('content')
-<div class="row mb-4">
-    <div class="col-md-3">
-        @if($book->cover_image)
-            <img src="{{ $book->cover_image }}" 
-                 class="img-fluid rounded shadow-sm" 
-                 alt="{{ $book->title }}"
-                 style="max-height: 400px; width: 100%; object-fit: contain; background-color: #f8f9fa;"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'400\'%3E%3Crect fill=\'%23dee2e6\' width=\'300\' height=\'400\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'18\' fill=\'%236c757d\'%3E{{ $book->title }}%3C/text%3E%3C/svg%3E'; this.style.backgroundColor='#dee2e6';">
-        @else
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-center shadow-sm" style="height: 400px; min-height: 400px;">
-                <div class="text-center text-white">
-                    <i class="bi bi-book" style="font-size: 5rem;"></i>
-                    <p class="mt-2 mb-0">{{ $book->title }}</p>
-                </div>
-            </div>
-        @endif
+<div class="row mb-4 fade-in">
+    <div class="col-12 mb-3">
+        <a href="{{ route('books.index') }}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Books
+        </a>
+    </div>
+</div>
 
-        @auth
-            <div class="mt-3">
-                <form action="{{ route('bookshelves.store', $book) }}" method="POST">
-                    @csrf
-                    <select name="status" class="form-select mb-2" onchange="this.form.submit()">
-                        <option value="">Add to Shelf</option>
-                        <option value="want_to_read" {{ $userBookshelf && $userBookshelf->status == 'want_to_read' ? 'selected' : '' }}>
-                            Want to Read
-                        </option>
-                        <option value="currently_reading" {{ $userBookshelf && $userBookshelf->status == 'currently_reading' ? 'selected' : '' }}>
-                            Currently Reading
-                        </option>
-                        <option value="read" {{ $userBookshelf && $userBookshelf->status == 'read' ? 'selected' : '' }}>
-                            Read
-                        </option>
-                    </select>
-                </form>
-                @if($userBookshelf)
-                    <form action="{{ route('bookshelves.destroy', $userBookshelf) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Remove from Shelf</button>
-                    </form>
+<div class="row mb-4 fade-in">
+    <div class="col-md-4 col-lg-3">
+        <div class="card shadow-lg border-0 sticky-top" style="top: 100px;">
+            <div class="card-body p-0">
+                @if($book->cover_image)
+                    <img src="{{ $book->cover_image }}" 
+                         class="img-fluid w-100" 
+                         alt="{{ $book->title }}"
+                         style="max-height: 450px; object-fit: contain; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'450\'%3E%3Crect fill=\'%23dee2e6\' width=\'300\' height=\'450\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'18\' fill=\'%236c757d\'%3E{{ $book->title }}%3C/text%3E%3C/svg%3E'; this.style.background='linear-gradient(135deg, #dee2e6 0%, #ced4da 100%)';">
+                @else
+                    <div class="d-flex align-items-center justify-content-center" 
+                         style="height: 450px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="text-center text-white">
+                            <i class="bi bi-book" style="font-size: 5rem;"></i>
+                            <p class="mt-3 mb-0 fw-semibold">{{ $book->title }}</p>
+                        </div>
+                    </div>
                 @endif
             </div>
-        @endauth
+            @auth
+                <div class="card-footer bg-white border-top">
+                    <form action="{{ route('bookshelves.store', $book) }}" method="POST">
+                        @csrf
+                        <select name="status" class="form-select mb-2" onchange="this.form.submit()">
+                            <option value="">Add to Shelf</option>
+                            <option value="want_to_read" {{ $userBookshelf && $userBookshelf->status == 'want_to_read' ? 'selected' : '' }}>
+                                📖 Want to Read
+                            </option>
+                            <option value="currently_reading" {{ $userBookshelf && $userBookshelf->status == 'currently_reading' ? 'selected' : '' }}>
+                                📚 Currently Reading
+                            </option>
+                            <option value="read" {{ $userBookshelf && $userBookshelf->status == 'read' ? 'selected' : '' }}>
+                                ✅ Read
+                            </option>
+                        </select>
+                    </form>
+                    @if($userBookshelf)
+                        <form action="{{ route('bookshelves.destroy', $userBookshelf) }}" method="POST" class="d-inline w-100">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                                <i class="bi bi-trash"></i> Remove from Shelf
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endauth
+        </div>
     </div>
 
-    <div class="col-md-9">
-        <h1>{{ $book->title }}</h1>
-        <h4 class="text-muted">by {{ $book->author }}</h4>
+    <div class="col-md-8 col-lg-9">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-start justify-content-between mb-3">
+                    <div class="flex-grow-1">
+                        <h1 class="fw-bold mb-2">{{ $book->title }}</h1>
+                        <h4 class="text-muted mb-3">
+                            <i class="bi bi-person"></i> by {{ $book->author }}
+                        </h4>
+                    </div>
+                </div>
 
-        @if($book->average_rating > 0)
-            <div class="mb-3">
-                <span class="star-rating fs-4">
-                    @for($i = 1; $i <= 5; $i++)
-                        <i class="bi bi-star{{ $i <= round($book->average_rating) ? '-fill' : '' }}"></i>
-                    @endfor
-                </span>
-                <span class="ms-2">{{ number_format($book->average_rating, 2) }} ({{ $book->total_reviews }} reviews)</span>
-            </div>
-        @endif
+                @if($book->average_rating > 0)
+                    <div class="mb-4 p-3 rounded" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                        <div class="d-flex align-items-center">
+                            <span class="star-rating fs-3 me-3">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="bi bi-star{{ $i <= round($book->average_rating) ? '-fill' : '' }}"></i>
+                                @endfor
+                            </span>
+                            <div>
+                                <div class="fw-bold fs-4">{{ number_format($book->average_rating, 2) }}</div>
+                                <small class="text-muted">from {{ $book->total_reviews }} {{ Str::plural('review', $book->total_reviews) }}</small>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
-        @if($book->genre)
-            <p><strong>Genre:</strong> <a href="{{ route('books.genre', $book->genre) }}">{{ $book->genre }}</a></p>
-        @endif
-
-        @if($book->synopsis)
-            <div class="mb-3">
-                <h5>Synopsis</h5>
-                <p>{{ $book->synopsis }}</p>
-            </div>
-        @endif
-
-        @if($book->publication_date || $book->publisher || $book->page_count)
-            <div class="mb-3">
-                <h5>Details</h5>
-                <ul class="list-unstyled">
-                    @if($book->publication_date)
-                        <li><strong>Published:</strong> {{ $book->publication_date->format('F Y') }}</li>
+                <div class="row mb-4">
+                    @if($book->genre)
+                        <div class="col-auto mb-2">
+                            <span class="badge bg-primary px-3 py-2">
+                                <i class="bi bi-tag"></i> 
+                                <a href="{{ route('books.genre', $book->genre) }}" class="text-white text-decoration-none">{{ $book->genre }}</a>
+                            </span>
+                        </div>
                     @endif
-                    @if($book->publisher)
-                        <li><strong>Publisher:</strong> {{ $book->publisher }}</li>
+                    @if($book->publication_date)
+                        <div class="col-auto mb-2">
+                            <span class="badge bg-info px-3 py-2">
+                                <i class="bi bi-calendar"></i> {{ $book->publication_date->format('Y') }}
+                            </span>
+                        </div>
                     @endif
                     @if($book->page_count)
-                        <li><strong>Pages:</strong> {{ $book->page_count }}</li>
+                        <div class="col-auto mb-2">
+                            <span class="badge bg-secondary px-3 py-2">
+                                <i class="bi bi-file-text"></i> {{ $book->page_count }} pages
+                            </span>
+                        </div>
                     @endif
-                </ul>
+                </div>
+
+                @if($book->synopsis)
+                    <div class="mb-4">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="bi bi-file-text text-primary me-2"></i>Synopsis
+                        </h5>
+                        <p class="lead" style="line-height: 1.8; color: #4b5563;">{{ $book->synopsis }}</p>
+                    </div>
+                @endif
+
+                @if($book->publication_date || $book->publisher || $book->page_count)
+                    <div class="card bg-light border-0 mb-4">
+                        <div class="card-body">
+                            <h5 class="fw-semibold mb-3">
+                                <i class="bi bi-info-circle text-primary me-2"></i>Book Details
+                            </h5>
+                            <div class="row">
+                                @if($book->publication_date)
+                                    <div class="col-md-6 mb-2">
+                                        <strong><i class="bi bi-calendar-event"></i> Published:</strong>
+                                        <span class="text-muted">{{ $book->publication_date->format('F j, Y') }}</span>
+                                    </div>
+                                @endif
+                                @if($book->publisher)
+                                    <div class="col-md-6 mb-2">
+                                        <strong><i class="bi bi-building"></i> Publisher:</strong>
+                                        <span class="text-muted">{{ $book->publisher }}</span>
+                                    </div>
+                                @endif
+                                @if($book->page_count)
+                                    <div class="col-md-6 mb-2">
+                                        <strong><i class="bi bi-file-text"></i> Pages:</strong>
+                                        <span class="text-muted">{{ number_format($book->page_count) }}</span>
+                                    </div>
+                                @endif
+                                @if($book->isbn)
+                                    <div class="col-md-6 mb-2">
+                                        <strong><i class="bi bi-upc"></i> ISBN:</strong>
+                                        <span class="text-muted">{{ $book->isbn }}</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
 </div>
 

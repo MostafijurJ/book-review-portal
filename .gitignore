@@ -1,0 +1,30 @@
+# composer
+/vendor/
+composer.phar
+
+# node
+/node_modules/
+
+# environment / secrets
+.env
+.env.*.local
+
+# IDEs
+/.idea/
+/.vscode/
+
+# logs / cache / uploads
+/storage/
+logs/
+cache/
+tmp/
+uploads/
+
+# build artefacts
+/dist/
+/build/
+/public/build/
+
+# OS
+.DS_Store
+Thumbs.db
